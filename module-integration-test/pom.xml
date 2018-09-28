@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>org.example</groupId>
+      <artifactId>sonar-integration-test</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
+   </parent>
+   
+   <groupId>org.example.sit</groupId>
+   <artifactId>module-integration-test</artifactId>
+   <packaging>jar</packaging>
+   
+   <name>Sonar Integration Tests - Module Integration Test</name>
+   <description>A module used to run the integration tests.</description>
+   
+   <properties>
+      <report.jacoco.ut>${project.basedir}/../target/jacoco.exec</report.jacoco.ut>
+      <report.jacoco.it>${project.basedir}/../target/jacoco-it.exec</report.jacoco.it>
+      <sonar.junit.reportPaths>${project.build.directory}/failsafe-reports</sonar.junit.reportPaths>
+   </properties>
+   
+   <dependencies>
+      <dependency>
+         <groupId>org.example.sit</groupId>
+         <artifactId>module-common</artifactId>
+      </dependency>
+   
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.hamcrest</groupId>
+         <artifactId>hamcrest-all</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-lang3</artifactId>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+   
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>agent-for-ut</id>
+                  <goals>
+                     <goal>prepare-agent</goal>
+                  </goals>
+                  <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         
+         <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <skip>true</skip>
+            </configuration>
+         </plugin>
+         
+         <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+               <skip>true</skip>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+   
+   <profiles>
+      <profile>
+         <id>it</id>
+         
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.jacoco</groupId>
+                  <artifactId>jacoco-maven-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <id>agent-for-it</id>
+                        <goals>
+                           <goal>prepare-agent-integration</goal>
+                        </goals>
+                        <configuration>
+                           <append>true</append>
+                           <destFile>${report.jacoco.it}</destFile>
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+               
+               <plugin>
+                  <artifactId>maven-failsafe-plugin</artifactId>
+                  <configuration>
+                     <skip>false</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+</project>
