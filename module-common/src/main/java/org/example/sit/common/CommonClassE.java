@@ -1,8 +1,9 @@
 package org.example.sit.common;
 
 /**
- * The code in this class will be tested using unit tests in {@code module-common} and integration
- * tests in {@code module-integration-test}.
+ * The code in this class will be tested using unit tests in {@code module-common} and
+ * {@code module-backend/rest-impl}, and integration tests in module
+ * {@code module-integration-test}.
  *
  * <ul>
  *    <li>
@@ -10,6 +11,13 @@ package org.example.sit.common;
  *       <ul>
  *          <li>{@code max(int, int)}</li>
  *          <li>{@code max(long, long)}</li>
+ *       </ul>
+ *    </li>
+ *    <li>
+ *       Unit tests in module {@code module-backend/rest-impl}:
+ *       <ul>
+ *          <li>{@code max(float, float)}</li>
+ *          <li>{@code max(double, double)}</li>
  *       </ul>
  *    </li>
  *    <li>
@@ -52,7 +60,37 @@ public class CommonClassE {
    }
    
    /**
-    * Returns the smaller of two {@code float} values.
+    * Return the greater of two {@code float} values.
+    *
+    * @param pArg1 The first {@code float} value.
+    * @param pArg2 The second {@code float} value.
+    * @return The greater value of {@code pArg1} and {@code pArg2}.
+    */
+   public float max(final float pArg1, final float pArg2) {
+      if (pArg1 != pArg1) { // NOSONAR
+         // pArg1 is NaN
+         return pArg1;
+      }
+      return pArg1 >= pArg2 ? pArg1 : pArg2;
+   }
+   
+   /**
+    * Return the greater of two {@code double} values.
+    *
+    * @param pArg1 The first {@code double} value.
+    * @param pArg2 The second {@code double} value.
+    * @return The greater value of {@code pArg1} and {@code pArg2}.
+    */
+   public double max(final double pArg1, final double pArg2) {
+      if (pArg1 != pArg1) { // NOSONAR
+         // pArg1 is NaN
+         return pArg1;
+      }
+      return pArg1 >= pArg2 ? pArg1 : pArg2;
+   }
+   
+   /**
+    * Return the smaller of two {@code float} values.
     *
     * @param pArg1 The first {@code float} value.
     * @param pArg2 The second {@code float} value.

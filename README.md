@@ -3,11 +3,17 @@
 A working demo of how to use Sonar to analyze a project.\
 It is a multi-module Maven project with a dedicated module to execute the integration tests.
 
+The REST resources will be tested using unit and integration tests.\
+The integration tests starts a Jetty instance for testing.
+
 ## The modules
  - `module-common`: a module which contains classes used by all modules,
+ - `module-backend/rest-impl`: a module which contains the implementation for a REST resource,
+ - `module-backend/rest-war`: a module which creates the WAR file of the REST resource,
  - `module-integration-test`: a module which contains the integration tests for all other modules.
 
 ## Build instructions
+From the root directory:
 ```console
 foo@bar:~# mvn clean install
 foo@bar:~# mvn -f module-integration-test/pom.xml clean install -Pit
