@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <artifactId>sonar-integration-test</artifactId>
+      <groupId>org.example</groupId>
+      <version>1.0-SNAPSHOT</version>
+      <relativePath>../../pom.xml</relativePath>
+   </parent>
+   
+   <groupId>org.example.sit</groupId>
+   <artifactId>module-rest-frontend-impl</artifactId>
+   <packaging>jar</packaging>
+   
+   <name>Sonar Integration Tests - Module REST Frontend - Implementation</name>
+   <description>A module with the REST implementation for the frontend.</description>
+   
+   <properties>
+      <report.jacoco.ut>${project.basedir}/../../target/jacoco.exec</report.jacoco.ut>
+      <report.jacoco.it>${project.basedir}/../../target/jacoco-it.exec</report.jacoco.it>
+   </properties>
+   
+   <dependencies>
+      <dependency>
+         <groupId>org.example.sit</groupId>
+         <artifactId>module-common</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.glassfish.jersey.containers</groupId>
+         <artifactId>jersey-container-servlet</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.glassfish.jersey.inject</groupId>
+         <artifactId>jersey-hk2</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.glassfish.jersey.media</groupId>
+         <artifactId>jersey-media-json-jackson</artifactId>
+      </dependency>
+      
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.hamcrest</groupId>
+         <artifactId>hamcrest-all</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.example.sit</groupId>
+         <artifactId>module-common</artifactId>
+         <type>test-jar</type>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-lang3</artifactId>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+</project>

@@ -21,6 +21,13 @@ package org.example.sit.common;
  *       </ul>
  *    </li>
  *    <li>
+ *       Unit tests in {@code module module-frontend/rest-impl}:
+ *       <ul>
+ *          <li>{@code min(int, int)}</li>
+ *          <li>{@code min(long, long)}</li>
+ *       </ul>
+ *    </li>
+ *    <li>
  *       Integration tests in module {@code module-integration-test}:
  *       <ul>
  *          <li>{@code min(float, float)}</li>
@@ -87,6 +94,28 @@ public class CommonClassE {
          return pArg1;
       }
       return pArg1 >= pArg2 ? pArg1 : pArg2;
+   }
+   
+   /**
+    * Returns the smaller of two {@code int} values.
+    *
+    * @param pArg1 The first {@code int} value.
+    * @param pArg2 The second {@code int} value.
+    * @return The smaller of {@code pArg1} and {@code pArg2}.
+    */
+   public int min(final int pArg1, final int pArg2) {
+      return pArg1 <= pArg2 ? pArg1 : pArg2;
+   }
+   
+   /**
+    * Returns the smaller of two {@code long} values.
+    *
+    * @param pArg1 The first {@code long} value.
+    * @param pArg2 The second {@code long} value.
+    * @return The smaller of {@code pArg1} and {@code pArg2}.
+    */
+   public long min(final long pArg1, final long pArg2) {
+      return pArg1 <= pArg2 ? pArg1 : pArg2;
    }
    
    /**

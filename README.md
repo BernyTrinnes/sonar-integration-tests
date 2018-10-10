@@ -8,8 +8,10 @@ The integration tests starts a Jetty instance for testing.
 
 ## The modules
  - `module-common`: a module which contains classes used by all modules,
- - `module-backend/rest-impl`: a module which contains the implementation for a REST resource,
- - `module-backend/rest-war`: a module which creates the WAR file of the REST resource,
+ - `module-backend/rest-impl`: a module which contains the implementation for the first REST resource,
+ - `module-backend/rest-war`: a module which creates the WAR file of the first REST resource,
+ - `module-frontend/rest-impl`: a module which contains the implementation for the second REST resource,
+ - `module-frontend/rest-war`: a module which creates the WAR file of the second REST resource,
  - `module-integration-test`: a module which contains the integration tests for all other modules.
 
 ## Build instructions

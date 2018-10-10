@@ -19,6 +19,9 @@ public abstract class RestResourceTestFactory {
    protected static final String PATH_REST_BACKEND_BASE = "/backend-rest";
    protected static final String PATH_REST_BACKEND_RESOURCE_B = "/resource-b";
    protected static final String PATH_REST_BACKEND_RESOURCE_C = "/resource-c";
+   protected static final String PATH_REST_FRONTEND_BASE = "/frontend-rest";
+   protected static final String PATH_REST_FRONTEND_RESOURCE_E = "/resource-e";
+   protected static final String PATH_REST_FRONTEND_RESOURCE_F = "/resource-f";
    
    private static final int DEFAULT_PORT_HTTP = 8080;
    private static final int DEFAULT_PORT_HTTPS = 8081;

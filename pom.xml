@@ -22,6 +22,8 @@
       <module>module-common</module>
       <module>module-backend/rest-impl</module>
       <module>module-backend/rest-war</module>
+      <module>module-frontend/rest-impl</module>
+      <module>module-frontend/rest-war</module>
    </modules>
    
    <developers>
