@@ -11,7 +11,6 @@ import org.apache.commons.lang3.RandomUtils;
 /**
  * Helper methods.
  */
-@SuppressWarnings({"javadoc", "boxing"})
 public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
    private DtoHelper() {
       // Hidden to prevent instantiation
@@ -20,13 +19,15 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
    /**
     * Create a {@code ResourceADto} with random values for its fields.
     *
-    * @return A instance of a {@code ResourceADto}.
+    * @return An instance of a {@code ResourceADto}.
     */
    public static ResourceADto createResourceADto() {
-      return new ResourceADto(RandomUtils.nextLong())
-            .setParamA1(RandomStringUtils.randomAlphanumeric(10))
-            .setParamA2(RandomUtils.nextBoolean())
-            .setParamA3(createResourceADtoParam3List());
+      return ResourceADto.builder()
+            .idA(RandomUtils.nextLong())
+            .paramA1(RandomStringUtils.randomAlphanumeric(10))
+            .paramA2(RandomUtils.nextBoolean())
+            .paramA3(createResourceADtoParam3List())
+            .build();
    }
    
    /**
@@ -51,24 +52,28 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
       if (null == pResourceDtoToClone) {
          return null;
       }
-      return new ResourceADto(pResourceDtoToClone.getIdA())
-            .setParamA1(pResourceDtoToClone.getParamA1())
-            .setParamA2(pResourceDtoToClone.getParamA2())
-            .setParamA3(pResourceDtoToClone.getParamA3());
+      return ResourceADto.builder()
+            .idA(pResourceDtoToClone.getIdA())
+            .paramA1(pResourceDtoToClone.getParamA1())
+            .paramA2(pResourceDtoToClone.getParamA2())
+            .paramA3(pResourceDtoToClone.getParamA3())
+            .build();
    }
    
    /**
     * Create a {@code ResourceBDto} with random values for its fields.
     *
-    * @return A instance of a {@code ResourceBDto}.
+    * @return An instance of a {@code ResourceBDto}.
     */
    public static ResourceBDto createResourceBDto() {
-      return new ResourceBDto(RandomUtils.nextLong())
-            .setParamB1(RandomUtils.nextInt())
-            .setParamB2(RandomStringUtils.randomAlphanumeric(10))
-            .setParamB3(RandomStringUtils.randomAlphanumeric(11))
-            .setParamB4(RandomUtils.nextBoolean())
-            .setParamB5(createResourceBDtoParam5List());
+      return ResourceBDto.builder()
+            .idB(RandomUtils.nextLong())
+            .paramB1(RandomUtils.nextInt())
+            .paramB2(RandomStringUtils.randomAlphanumeric(10))
+            .paramB3(RandomStringUtils.randomAlphanumeric(11))
+            .paramB4(RandomUtils.nextBoolean())
+            .paramB5(createResourceBDtoParam5List())
+            .build();
    }
    
    /**
@@ -93,28 +98,32 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
       if (null == pResourceDtoToClone) {
          return null;
       }
-      return new ResourceBDto(pResourceDtoToClone.getIdB())
-            .setParamB1(pResourceDtoToClone.getParamB1())
-            .setParamB2(pResourceDtoToClone.getParamB2())
-            .setParamB3(pResourceDtoToClone.getParamB3())
-            .setParamB4(pResourceDtoToClone.getParamB4())
-            .setParamB5(pResourceDtoToClone.getParamB5());
+      return ResourceBDto.builder()
+            .idB(pResourceDtoToClone.getIdB())
+            .paramB1(pResourceDtoToClone.getParamB1())
+            .paramB2(pResourceDtoToClone.getParamB2())
+            .paramB3(pResourceDtoToClone.getParamB3())
+            .paramB4(pResourceDtoToClone.getParamB4())
+            .paramB5(pResourceDtoToClone.getParamB5())
+            .build();
    }
    
    /**
     * Create a {@code ResourceCDto} with random values for its fields.
     *
-    * @return A instance of a {@code ResourceCDto}.
+    * @return An instance of a {@code ResourceCDto}.
     */
    public static ResourceCDto createResourceCDto() {
-      return new ResourceCDto(RandomUtils.nextLong())
-            .setParamC1(RandomStringUtils.randomAlphanumeric(10))
-            .setParamC2(RandomUtils.nextInt())
-            .setParamC3(RandomStringUtils.randomAlphanumeric(10))
-            .setParamC4(RandomStringUtils.randomAlphanumeric(11))
-            .setParamC5(RandomUtils.nextBoolean())
-            .setParamC6(RandomUtils.nextLong())
-            .setParamC7(createResourceCDtoParam7List());
+      return ResourceCDto.builder()
+            .idC(RandomUtils.nextLong())
+            .paramC1(RandomStringUtils.randomAlphanumeric(10))
+            .paramC2(RandomUtils.nextInt())
+            .paramC3(RandomStringUtils.randomAlphanumeric(10))
+            .paramC4(RandomStringUtils.randomAlphanumeric(11))
+            .paramC5(RandomUtils.nextBoolean())
+            .paramC6(RandomUtils.nextLong())
+            .paramC7(createResourceCDtoParam7List())
+            .build();
    }
    
    /**
@@ -138,13 +147,15 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
       if (null == pResourceDtoToClone) {
          return null;
       }
-      return new ResourceCDto(pResourceDtoToClone.getIdC())
-            .setParamC1(pResourceDtoToClone.getParamC1())
-            .setParamC2(pResourceDtoToClone.getParamC2())
-            .setParamC3(pResourceDtoToClone.getParamC3())
-            .setParamC4(pResourceDtoToClone.getParamC4())
-            .setParamC5(pResourceDtoToClone.getParamC5())
-            .setParamC6(pResourceDtoToClone.getParamC6())
-            .setParamC7(pResourceDtoToClone.getParamC7());
+      return ResourceCDto.builder()
+            .idC(pResourceDtoToClone.getIdC())
+            .paramC1(pResourceDtoToClone.getParamC1())
+            .paramC2(pResourceDtoToClone.getParamC2())
+            .paramC3(pResourceDtoToClone.getParamC3())
+            .paramC4(pResourceDtoToClone.getParamC4())
+            .paramC5(pResourceDtoToClone.getParamC5())
+            .paramC6(pResourceDtoToClone.getParamC6())
+            .paramC7(pResourceDtoToClone.getParamC7())
+            .build();
    }
 }

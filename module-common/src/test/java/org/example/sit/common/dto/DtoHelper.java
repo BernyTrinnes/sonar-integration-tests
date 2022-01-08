@@ -1,7 +1,7 @@
 package org.example.sit.common.dto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Helper methods.
  */
-@SuppressWarnings({"javadoc", "boxing"})
 public abstract class DtoHelper {
    /**
     * Assert that the JSON transformed DTO is equal to the given JSON representation.

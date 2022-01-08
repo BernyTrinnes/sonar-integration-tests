@@ -19,27 +19,26 @@ import org.apache.commons.lang3.RandomUtils;
 import org.example.sit.common.resources.ResourceHandler;
 import org.example.sit.rest.backend.dto.DtoHelper;
 import org.example.sit.rest.backend.dto.ResourceADto;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Tests for {@code ResourceA}.
  */
-@RunWith(MockitoJUnitRunner.class)
-@SuppressWarnings({"javadoc", "boxing"})
-public class ResourceATest {
+@ExtendWith(MockitoExtension.class)
+class ResourceATest {
    @Mock
-   private ResourceHandler<ResourceADto> resources;
+   private ResourceHandler<ResourceADto> resourceHandler;
    
    @InjectMocks
    private ResourceA resourceA;
    
    @Test
    @SuppressWarnings("unchecked")
-   public void test_getAvailability_Success() {
+   void test_getAvailability_Success() {
       final Response response = this.resourceA.getAvailability();
       
       assertThat(response).isNotNull();
@@ -47,18 +46,17 @@ public class ResourceATest {
       assertThat(response.hasEntity()).isTrue();
       assertThat(response.getEntity()).isNotNull().isInstanceOf(Map.class);
       final Map<Object, Object> entity = (Map<Object, Object>) response.getEntity();
-      assertThat(entity).hasSize(2).containsOnlyKeys("available", "timestamp")
-            .containsEntry("available", Boolean.TRUE);
+      assertThat(entity).hasSize(2).containsOnlyKeys("available", "timestamp").containsEntry("available", Boolean.TRUE);
    }
    
    @Test
-   public void test_getAllResourceA_NotFound() {
-      when(this.resources.hasResources()).thenReturn(false);
+   void test_getAllResourceA_NotFound() {
+      when(this.resourceHandler.hasResources()).thenReturn(false);
       
       final Response response = this.resourceA.getAllResourceA();
       
-      verify(this.resources).hasResources();
-      verify(this.resources, never()).getAllResources();
+      verify(this.resourceHandler).hasResources();
+      verify(this.resourceHandler, never()).getAllResources();
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.NOT_FOUND);
@@ -67,18 +65,18 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_getAllResourceA_Success() {
-      when(this.resources.hasResources()).thenReturn(true);
+   void test_getAllResourceA_Success() {
+      when(this.resourceHandler.hasResources()).thenReturn(true);
       final ResourceADto resourceADto1 = DtoHelper.createResourceADto();
       final ResourceADto resourceADto2 = DtoHelper.createResourceADto();
       final ResourceADto resourceADto3 = DtoHelper.createResourceADto();
-      when(this.resources.getAllResources()).thenReturn(Arrays.asList(resourceADto1, resourceADto2,
+      when(this.resourceHandler.getAllResources()).thenReturn(Arrays.asList(resourceADto1, resourceADto2,
             resourceADto3));
       
       final Response response = this.resourceA.getAllResourceA();
-   
-      verify(this.resources).hasResources();
-      verify(this.resources).getAllResources();
+      
+      verify(this.resourceHandler).hasResources();
+      verify(this.resourceHandler).getAllResources();
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.OK);
@@ -88,7 +86,20 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_createResourceA_BadRequest() {
+   void test_deleteAllResourceA_Success() {
+      final Response response = this.resourceA.deleteAllResourceA();
+      
+      verify(this.resourceHandler).removeAllResources();
+      
+      assertThat(response).isNotNull();
+      assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.OK);
+      assertThat(response.hasEntity()).isTrue();
+      assertThat(response.getEntity()).isNotNull().isInstanceOf(AbstractMap.SimpleEntry.class)
+            .isEqualTo(new AbstractMap.SimpleEntry<>("cleared", Boolean.TRUE));
+   }
+   
+   @Test
+   void test_createResourceA_BadRequest() {
       final Response response = this.resourceA.createResourceA(null);
       
       assertThat(response).isNotNull();
@@ -98,15 +109,15 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_createResourceA_Conflict() {
+   void test_createResourceA_Conflict() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(true);
-   
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(true);
+      
       final Response response = this.resourceA.createResourceA(resourceADto);
-   
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources, never()).addResource(anyLong(), any(ResourceADto.class));
-   
+      
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler, never()).addResource(anyLong(), any(ResourceADto.class));
+      
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.CONFLICT);
       assertThat(response.hasEntity()).isTrue();
@@ -115,32 +126,31 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_createResourceA_Success() {
+   void test_createResourceA_Success() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(false);
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(false);
       
       final Response response = this.resourceA.createResourceA(resourceADto);
       
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources).addResource(eq(resourceADto.getIdA()), eq(resourceADto));
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler).addResource(resourceADto.getIdA(), resourceADto);
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.CREATED);
       assertThat(response.hasEntity()).isTrue();
-      assertThat(response.getEntity()).isNotNull().isInstanceOf(ResourceADto.class)
-            .isEqualTo(resourceADto);
+      assertThat(response.getEntity()).isNotNull().isInstanceOf(ResourceADto.class).isEqualTo(resourceADto);
    }
    
    @Test
-   public void test_getResourceA_NotFound() {
+   void test_getResourceA_NotFound() {
       final long id = RandomUtils.nextLong();
-      when(this.resources.hasResource(id)).thenReturn(false);
-   
+      when(this.resourceHandler.hasResource(id)).thenReturn(false);
+      
       final Response response = this.resourceA.getResourceA(id);
-   
-      verify(this.resources).hasResource(eq(id));
-      verify(this.resources, never()).getResource(id);
-   
+      
+      verify(this.resourceHandler).hasResource(id);
+      verify(this.resourceHandler, never()).getResource(id);
+      
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.NOT_FOUND);
       assertThat(response.hasEntity()).isTrue();
@@ -149,33 +159,32 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_getResourceA_Success() {
+   void test_getResourceA_Success() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(true);
-      when(this.resources.getResource(resourceADto.getIdA()))
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(true);
+      when(this.resourceHandler.getResource(resourceADto.getIdA()))
             .thenReturn(DtoHelper.cloneResourceADto(resourceADto));
       
       final Response response = this.resourceA.getResourceA(resourceADto.getIdA());
       
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources).getResource(eq(resourceADto.getIdA()));
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler).getResource(resourceADto.getIdA());
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.OK);
       assertThat(response.hasEntity()).isTrue();
-      assertThat(response.getEntity()).isNotNull().isInstanceOf(ResourceADto.class)
-            .isEqualTo(resourceADto);
+      assertThat(response.getEntity()).isNotNull().isInstanceOf(ResourceADto.class).isEqualTo(resourceADto);
    }
    
    @Test
-   public void test_deleteResourceA_NotFound() {
+   void test_deleteResourceA_NotFound() {
       final long id = RandomUtils.nextLong();
-      when(this.resources.hasResource(id)).thenReturn(false);
+      when(this.resourceHandler.hasResource(id)).thenReturn(false);
       
       final Response response = this.resourceA.deleteResourceA(id);
       
-      verify(this.resources).hasResource(eq(id));
-      verify(this.resources, never()).removeResource(eq(id));
+      verify(this.resourceHandler).hasResource(id);
+      verify(this.resourceHandler, never()).removeResource(id);
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.NOT_FOUND);
@@ -185,14 +194,14 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_deleteResourceA_Success() {
+   void test_deleteResourceA_Success() {
       final long id = RandomUtils.nextLong();
-      when(this.resources.hasResource(id)).thenReturn(true);
+      when(this.resourceHandler.hasResource(id)).thenReturn(true);
       
       final Response response = this.resourceA.deleteResourceA(id);
       
-      verify(this.resources).hasResource(eq(id));
-      verify(this.resources).removeResource(eq(id));
+      verify(this.resourceHandler).hasResource(id);
+      verify(this.resourceHandler).removeResource(id);
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.OK);
@@ -202,15 +211,15 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_updateResourceA_NotFound() {
+   void test_updateResourceA_NotFound() {
       final long id = RandomUtils.nextLong();
-      when(this.resources.hasResource(id)).thenReturn(false);
+      when(this.resourceHandler.hasResource(id)).thenReturn(false);
       
-      final Response response = this.resourceA.updateResourceA(id, null);
+      final Response response = this.resourceA.updateResourceA(id, ResourceADto.builder().build());
       
-      verify(this.resources).hasResource(eq(id));
-      verify(this.resources, never()).getResource(eq(id));
-      verify(this.resources, never()).replaceResource(eq(id), any(ResourceADto.class));
+      verify(this.resourceHandler).hasResource(id);
+      verify(this.resourceHandler, never()).getResource(id);
+      verify(this.resourceHandler, never()).replaceResource(eq(id), any(ResourceADto.class));
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.NOT_FOUND);
@@ -220,15 +229,14 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_updateResourceA_BadRequest() {
+   void test_updateResourceA_BadRequest() {
       final long id = RandomUtils.nextLong();
-      when(this.resources.hasResource(id)).thenReturn(true);
       
       final Response response = this.resourceA.updateResourceA(id, null);
       
-      verify(this.resources).hasResource(eq(id));
-      verify(this.resources, never()).getResource(eq(id));
-      verify(this.resources, never()).replaceResource(eq(id), any(ResourceADto.class));
+      verify(this.resourceHandler, never()).hasResource(id);
+      verify(this.resourceHandler, never()).getResource(id);
+      verify(this.resourceHandler, never()).replaceResource(eq(id), any(ResourceADto.class));
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.BAD_REQUEST);
@@ -238,19 +246,18 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_updateResourceA_Success() {
+   void test_updateResourceA_Success() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(true);
-      when(this.resources.getResource(resourceADto.getIdA()))
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(true);
+      when(this.resourceHandler.getResource(resourceADto.getIdA()))
             .thenReturn(DtoHelper.cloneResourceADto(resourceADto));
       
       final ResourceADto resourceADtoToUpdate = DtoHelper.createResourceADto();
-      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(),
-            resourceADtoToUpdate);
+      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(), resourceADtoToUpdate);
       
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources).getResource(eq(resourceADto.getIdA()));
-      verify(this.resources).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler).getResource(resourceADto.getIdA());
+      verify(this.resourceHandler).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.ACCEPTED);
@@ -263,20 +270,21 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_updateResourceA_OnlyParam1_Success() {
+   void test_updateResourceA_OnlyParam1_Success() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(true);
-      when(this.resources.getResource(resourceADto.getIdA()))
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(true);
+      when(this.resourceHandler.getResource(resourceADto.getIdA()))
             .thenReturn(DtoHelper.cloneResourceADto(resourceADto));
       
-      final ResourceADto resourceADtoToUpdate = new ResourceADto(resourceADto.getIdA())
-            .setParamA1(RandomStringUtils.randomAlphanumeric(12));
-      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(),
-            resourceADtoToUpdate);
+      final ResourceADto resourceADtoToUpdate = ResourceADto.builder()
+            .idA(resourceADto.getIdA())
+            .paramA1(RandomStringUtils.randomAlphanumeric(12))
+            .build();
+      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(), resourceADtoToUpdate);
       
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources).getResource(eq(resourceADto.getIdA()));
-      verify(this.resources).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler).getResource(resourceADto.getIdA());
+      verify(this.resourceHandler).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.ACCEPTED);
@@ -289,20 +297,21 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_updateResourceA_OnlyParam2_Success() {
+   void test_updateResourceA_OnlyParam2_Success() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(true);
-      when(this.resources.getResource(resourceADto.getIdA()))
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(true);
+      when(this.resourceHandler.getResource(resourceADto.getIdA()))
             .thenReturn(DtoHelper.cloneResourceADto(resourceADto));
       
-      final ResourceADto resourceADtoToUpdate = new ResourceADto(resourceADto.getIdA())
-            .setParamA2(!resourceADto.getParamA2());
-      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(),
-            resourceADtoToUpdate);
+      final ResourceADto resourceADtoToUpdate = ResourceADto.builder()
+            .idA(resourceADto.getIdA())
+            .paramA2(!resourceADto.getParamA2())
+            .build();
+      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(), resourceADtoToUpdate);
       
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources).getResource(eq(resourceADto.getIdA()));
-      verify(this.resources).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler).getResource(resourceADto.getIdA());
+      verify(this.resourceHandler).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.ACCEPTED);
@@ -315,20 +324,21 @@ public class ResourceATest {
    }
    
    @Test
-   public void test_updateResourceA_OnlyParam3_Success() {
+   void test_updateResourceA_OnlyParam3_Success() {
       final ResourceADto resourceADto = DtoHelper.createResourceADto();
-      when(this.resources.hasResource(resourceADto.getIdA())).thenReturn(true);
-      when(this.resources.getResource(resourceADto.getIdA()))
+      when(this.resourceHandler.hasResource(resourceADto.getIdA())).thenReturn(true);
+      when(this.resourceHandler.getResource(resourceADto.getIdA()))
             .thenReturn(DtoHelper.cloneResourceADto(resourceADto));
       
-      final ResourceADto resourceADtoToUpdate = new ResourceADto(resourceADto.getIdA())
-            .setParamA3(DtoHelper.createResourceADtoParam3List());
-      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(),
-            resourceADtoToUpdate);
+      final ResourceADto resourceADtoToUpdate = ResourceADto.builder()
+            .idA(resourceADto.getIdA())
+            .paramA3(DtoHelper.createResourceADtoParam3List())
+            .build();
+      final Response response = this.resourceA.updateResourceA(resourceADto.getIdA(), resourceADtoToUpdate);
       
-      verify(this.resources).hasResource(eq(resourceADto.getIdA()));
-      verify(this.resources).getResource(eq(resourceADto.getIdA()));
-      verify(this.resources).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
+      verify(this.resourceHandler).hasResource(resourceADto.getIdA());
+      verify(this.resourceHandler).getResource(resourceADto.getIdA());
+      verify(this.resourceHandler).replaceResource(eq(resourceADto.getIdA()), any(ResourceADto.class));
       
       assertThat(response).isNotNull();
       assertThat(response.getStatusInfo()).isNotNull().isEqualTo(Response.Status.ACCEPTED);

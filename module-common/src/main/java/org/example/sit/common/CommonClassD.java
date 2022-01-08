@@ -1,12 +1,11 @@
 package org.example.sit.common;
 
 /**
- * The code in this class will be tested using integration tests in {@code module-integration-test}.
+ * The code in this class will be tested using integration tests in {@code module-integration-tests}.
  */
-@SuppressWarnings("boxing")
 public class CommonClassD {
    /**
-    * Initializer.
+    * Initialize this class.
     */
    public CommonClassD() {
       // Nothing to do
@@ -18,8 +17,8 @@ public class CommonClassD {
     * @param pSide The value of the cube's side.
     * @return The surface of a cube with the given side.
     * @throws IllegalArgumentException If the value of the square's side is less than
-    * <code>{@value CommonClassA#SIDE_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#SIDE_VALUE_MAX}</code>.
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MAX}</code>.
     */
    public double getCubeSurface(final double pSide) {
       validateSideValue(pSide);
@@ -28,10 +27,11 @@ public class CommonClassD {
    }
    
    private void validateSideValue(final double pSide) {
-      if ((pSide < CommonClassA.SIDE_VALUE_MIN) || (pSide > CommonClassA.SIDE_VALUE_MAX)) {
+      if ((pSide < CommonClassesConstantsFactory.SIDE_VALUE_MIN) ||
+            (pSide > CommonClassesConstantsFactory.SIDE_VALUE_MAX)) {
          throw new IllegalArgumentException(String.format(
                "The value for the side of a geometric object must be between %f and %f.",
-               CommonClassA.SIDE_VALUE_MIN, CommonClassA.SIDE_VALUE_MAX));
+               CommonClassesConstantsFactory.SIDE_VALUE_MIN, CommonClassesConstantsFactory.SIDE_VALUE_MAX));
       }
    }
    
@@ -41,8 +41,8 @@ public class CommonClassD {
     * @param pSide The value of the cube's side.
     * @return The volume of a cube with the given side.
     * @throws IllegalArgumentException If the value of the cube's side is less than
-    * <code>{@value CommonClassA#SIDE_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#SIDE_VALUE_MAX}</code>.
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MAX}</code>.
     */
    public double getCubeVolume(final double pSide) {
       validateSideValue(pSide);
@@ -57,9 +57,9 @@ public class CommonClassD {
     * @param pSideB The value of the second cuboid side.
     * @param pSideC The value of the third cuboid side.
     * @return The surface of a cuboid with the given sides.
-    * @throws IllegalArgumentException If one of the values of the cuboid's sides is less than
-    * <code>{@value CommonClassA#SIDE_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#SIDE_VALUE_MAX}</code>.
+    * @throws IllegalArgumentException If one of the values of the cuboids sides is less than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MAX}</code>.
     */
    public double getCuboidSurface(final double pSideA, final double pSideB, final double pSideC) {
       validateSideValue(pSideA);
@@ -76,9 +76,9 @@ public class CommonClassD {
     * @param pSideB The value of the second cuboid side.
     * @param pSideC The value of the third cuboid side.
     * @return The volume of a cuboid with the given sides.
-    * @throws IllegalArgumentException If one of the values of the cuboid's sides is less than
-    * <code>{@value CommonClassA#SIDE_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#SIDE_VALUE_MAX}</code>.
+    * @throws IllegalArgumentException If one of the values of the cuboids sides is less than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MAX}</code>.
     */
    public double getCuboidVolume(final double pSideA, final double pSideB, final double pSideC) {
       validateSideValue(pSideA);
@@ -94,9 +94,9 @@ public class CommonClassD {
     * @param pSide The value of the pyramid's base side.
     * @param pHeight The value of the pyramid's height.
     * @return The surface of a pyramid with the given base side and height.
-    * @throws IllegalArgumentException If the value of the pyramid's base side or the pyramid's
-    * height is less than <code>{@value CommonClassA#SIDE_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#SIDE_VALUE_MAX}</code>.
+    * @throws IllegalArgumentException If the value of the pyramid's base side or the pyramid's height is less than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MAX}</code>.
     */
    public double getPyramidSurface(final double pSide, final double pHeight) {
       validateSideValue(pSide);
@@ -114,9 +114,9 @@ public class CommonClassD {
     * @param pSide The value of the pyramid's base side.
     * @param pHeight The value of the pyramid's height.
     * @return The volume of a pyramid with the given base side and height.
-    * @throws IllegalArgumentException If the value of the pyramid's base side or the pyramid's
-    * height is less than <code>{@value CommonClassA#SIDE_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#SIDE_VALUE_MAX}</code>.
+    * @throws IllegalArgumentException If the value of the pyramid's base side or the pyramid's height is less than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#SIDE_VALUE_MAX}</code>.
     */
    public double getPyramidVolume(final double pSide, final double pHeight) {
       validateSideValue(pSide);
@@ -131,9 +131,9 @@ public class CommonClassD {
     *
     * @param pRadius The value of the sphere's radius.
     * @return The surface of a sphere with the given radius.
-    * @throws IllegalArgumentException If the value of the spheres's radius is less than
-    * <code>{@value CommonClassA#RADIUS_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#RADIUS_VALUE_MAX}</code>.
+    * @throws IllegalArgumentException If the value of the sphere's radius is less than
+    * <code>{@value CommonClassesConstantsFactory#RADIUS_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#RADIUS_VALUE_MAX}</code>.
     */
    public double getSphereSurface(final double pRadius) {
       validateRadiusValue(pRadius);
@@ -142,10 +142,11 @@ public class CommonClassD {
    }
    
    private void validateRadiusValue(final double pRadius) {
-      if ((pRadius < CommonClassA.RADIUS_VALUE_MIN) || (pRadius > CommonClassA.RADIUS_VALUE_MAX)) {
+      if ((pRadius < CommonClassesConstantsFactory.RADIUS_VALUE_MIN) ||
+            (pRadius > CommonClassesConstantsFactory.RADIUS_VALUE_MAX)) {
          throw new IllegalArgumentException(
                String.format("The value for the radius of a sphere must be between %f and %f.",
-                     CommonClassA.RADIUS_VALUE_MIN, CommonClassA.RADIUS_VALUE_MAX));
+                     CommonClassesConstantsFactory.RADIUS_VALUE_MIN, CommonClassesConstantsFactory.RADIUS_VALUE_MAX));
       }
    }
    
@@ -155,8 +156,8 @@ public class CommonClassD {
     * @param pRadius The value of the sphere's radius.
     * @return The volume of a sphere with the given radius.
     * @throws IllegalArgumentException If the value of the sphere's radius is less than
-    * <code>{@value CommonClassA#RADIUS_VALUE_MIN}</code> or greater than
-    * <code>{@value CommonClassA#RADIUS_VALUE_MAX}</code>.
+    * <code>{@value CommonClassesConstantsFactory#RADIUS_VALUE_MIN}</code> or greater than
+    * <code>{@value CommonClassesConstantsFactory#RADIUS_VALUE_MAX}</code>.
     */
    public double getSphereVolume(final double pRadius) {
       validateRadiusValue(pRadius);

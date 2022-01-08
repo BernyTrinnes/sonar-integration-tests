@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory$Server">
+   <Set name="Provider">
+      <Property name="jetty.sslContext.provider"/>
+   </Set>
+   <Set name="KeyStorePath">
+      <Property name="jetty.base" default="."/>/etc/jetty.jks
+   </Set>
+   <Set name="KeyStorePassword">jettykeystore</Set>
+   <Set name="KeyStoreType">JKS</Set>
+   <Set name="KeyStoreProvider">
+      <Property name="jetty.sslContext.keyStoreProvider"/>
+   </Set>
+   <Set name="KeyManagerPassword">jettykeystore</Set>
+   <Set name="TrustStorePath">
+      <Property name="jetty.base" default="."/>/etc/jetty.jks
+   </Set>
+   <Set name="TrustStorePassword">jettykeystore</Set>
+   <Set name="TrustStoreType">JKS</Set>
+   <Set name="TrustStoreProvider">
+      <Property name="jetty.sslContext.trustStoreProvider"/>
+   </Set>
+   <Set name="useCipherSuitesOrder">
+      <Property name="jetty.sslContext.useCipherSuitesOrder" default="true"/>
+   </Set>
+   <Set name="sslSessionCacheSize">
+      <Property name="jetty.sslContext.sslSessionCacheSize" default="-1"/>
+   </Set>
+   <Set name="sslSessionTimeout">
+      <Property name="jetty.sslContext.sslSessionTimeout" default="-1"/>
+   </Set>
+   <Set name="RenegotiationAllowed">
+      <Property name="jetty.sslContext.renegotiationAllowed" default="true"/>
+   </Set>
+   <Set name="RenegotiationLimit">
+      <Property name="jetty.sslContext.renegotiationLimit" default="5"/>
+   </Set>
+</Configure>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+   <Call name="addBean">
+      <Arg>
+         <New class="org.eclipse.jetty.security.HashLoginService">
+            <Set name="name">REST</Set>
+            <Set name="config">
+               <Property name="jetty.base" default="." />/etc/jetty-realm-rest.properties
+            </Set>
+            <Set name="hotReload">false</Set>
+         </New>
+      </Arg>
+   </Call>
+</Configure>

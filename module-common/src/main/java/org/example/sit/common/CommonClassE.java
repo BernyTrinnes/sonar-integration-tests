@@ -1,9 +1,8 @@
 package org.example.sit.common;
 
 /**
- * The code in this class will be tested using unit tests in {@code module-common} and
- * {@code module-backend/rest-impl}, and integration tests in module
- * {@code module-integration-test}.
+ * The code in this class will be tested using unit tests in {@code module-common} and {@code module-backend/rest-impl},
+ * and integration tests in module {@code module-integration-tests}.
  *
  * <ul>
  *    <li>
@@ -28,17 +27,17 @@ package org.example.sit.common;
  *       </ul>
  *    </li>
  *    <li>
- *       Integration tests in module {@code module-integration-test}:
+ *       Integration tests in module {@code module-integration-tests}:
  *       <ul>
  *          <li>{@code min(float, float)}</li>
- *          <li>{@code max(double, double)}</li>
+ *          <li>{@code min(double, double)}</li>
  *       </ul>
  *    </li>
  * </ul>
  */
 public class CommonClassE {
    /**
-    * Initializer.
+    * Initialize this class.
     */
    public CommonClassE() {
       // Nothing to do
@@ -101,7 +100,7 @@ public class CommonClassE {
     *
     * @param pArg1 The first {@code int} value.
     * @param pArg2 The second {@code int} value.
-    * @return The smaller of {@code pArg1} and {@code pArg2}.
+    * @return The smaller value of {@code pArg1} and {@code pArg2}.
     */
    public int min(final int pArg1, final int pArg2) {
       return pArg1 <= pArg2 ? pArg1 : pArg2;
@@ -112,7 +111,7 @@ public class CommonClassE {
     *
     * @param pArg1 The first {@code long} value.
     * @param pArg2 The second {@code long} value.
-    * @return The smaller of {@code pArg1} and {@code pArg2}.
+    * @return The smaller value of {@code pArg1} and {@code pArg2}.
     */
    public long min(final long pArg1, final long pArg2) {
       return pArg1 <= pArg2 ? pArg1 : pArg2;
@@ -123,7 +122,7 @@ public class CommonClassE {
     *
     * @param pArg1 The first {@code float} value.
     * @param pArg2 The second {@code float} value.
-    * @return The smaller of {@code pArg1} and {@code pArg2}.
+    * @return The smaller value of {@code pArg1} and {@code pArg2}.
     */
    public float min(final float pArg1, final float pArg2) {
       if (pArg1 != pArg1) { // NOSONAR
@@ -138,7 +137,7 @@ public class CommonClassE {
     *
     * @param pArg1 The first {@code double} value.
     * @param pArg2 The second {@code double} value.
-    * @return The smaller of {@code pArg1} and {@code pArg2}.
+    * @return The smaller value of {@code pArg1} and {@code pArg2}.
     */
    public double min(final double pArg1, final double pArg2) {
       if (pArg1 != pArg1) { // NOSONAR

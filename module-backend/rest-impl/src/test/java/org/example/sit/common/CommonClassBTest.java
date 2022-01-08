@@ -2,26 +2,26 @@ package org.example.sit.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * Tests for {@code CommonClassB} from {@code module-common}.
  */
-@SuppressWarnings("javadoc")
-public class CommonClassBTest {
+class CommonClassBTest {
    private CommonClassB classInstance;
    
-   @Before
+   @BeforeEach
    public void setUp() {
       this.classInstance = new CommonClassB();
       assertNotNull(this.classInstance);
    }
    
    @Test
-   public void test_add_int_ArithmeticException() {
+   void test_add_int_ArithmeticException() {
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
             () -> this.classInstance.add(Integer.MAX_VALUE, 2));
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
@@ -33,7 +33,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_add_int_Success() {
+   void test_add_int_Success() {
       assertThat(this.classInstance.add(1, 2)).isEqualTo(3);
       assertThat(this.classInstance.add(1, -2)).isEqualTo(-1);
       assertThat(this.classInstance.add(-1, 2)).isEqualTo(1);
@@ -45,7 +45,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_add_long_ArithmeticException() {
+   void test_add_long_ArithmeticException() {
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
             () -> this.classInstance.add(Long.MAX_VALUE, 2L));
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
@@ -57,7 +57,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_add_long_Success() {
+   void test_add_long_Success() {
       assertThat(this.classInstance.add(3L, 4L)).isEqualTo(7L);
       assertThat(this.classInstance.add(3L, -4L)).isEqualTo(-1L);
       assertThat(this.classInstance.add(-3L, 4L)).isEqualTo(1L);
@@ -69,7 +69,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_subtract_int_ArithmeticException() {
+   void test_subtract_int_ArithmeticException() {
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
             () -> this.classInstance.subtract(Integer.MIN_VALUE, 2));
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
@@ -77,7 +77,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_subtract_int_Success() {
+   void test_subtract_int_Success() {
       assertThat(this.classInstance.subtract(5, 6)).isEqualTo(-1);
       assertThat(this.classInstance.subtract(5, -6)).isEqualTo(11);
       assertThat(this.classInstance.subtract(-5, 6)).isEqualTo(-11);
@@ -89,7 +89,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_subtract_long_ArithmeticException() {
+   void test_subtract_long_ArithmeticException() {
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
             () -> this.classInstance.subtract(Long.MIN_VALUE, 2L));
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
@@ -97,7 +97,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_subtract_long_Success() {
+   void test_subtract_long_Success() {
       assertThat(this.classInstance.subtract(7L, 8L)).isEqualTo(-1L);
       assertThat(this.classInstance.subtract(7L, -8L)).isEqualTo(15L);
       assertThat(this.classInstance.subtract(-7L, 8L)).isEqualTo(-15L);
@@ -109,7 +109,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_multiply_int_ArithmeticException() {
+   void test_multiply_int_ArithmeticException() {
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
             () -> this.classInstance.multiply(Integer.MAX_VALUE, 2));
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
@@ -121,7 +121,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_multiply_int_Success() {
+   void test_multiply_int_Success() {
       assertThat(this.classInstance.multiply(9, 10)).isEqualTo(90);
       assertThat(this.classInstance.multiply(9, -10)).isEqualTo(-90);
       assertThat(this.classInstance.multiply(-9, 10)).isEqualTo(-90);
@@ -133,7 +133,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_multiply_long_ArithmeticException() {
+   void test_multiply_long_ArithmeticException() {
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
             () -> this.classInstance.multiply(Long.MAX_VALUE, 2L));
       assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
@@ -147,7 +147,7 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_multiply_long_Success() {
+   void test_multiply_long_Success() {
       assertThat(this.classInstance.multiply(11L, 12L)).isEqualTo(132L);
       assertThat(this.classInstance.multiply(11L, -12L)).isEqualTo(-132L);
       assertThat(this.classInstance.multiply(-11L, 12L)).isEqualTo(-132L);
@@ -156,15 +156,21 @@ public class CommonClassBTest {
       assertThat(this.classInstance.multiply(12L, -11L)).isEqualTo(-132L);
       assertThat(this.classInstance.multiply(-12L, 11L)).isEqualTo(-132L);
       assertThat(this.classInstance.multiply(-12L, -11L)).isEqualTo(132L);
-      assertThat(this.classInstance.multiply(0L, 1L)).isEqualTo(0L);
+      assertThat(this.classInstance.multiply(0L, 1L)).isZero();
    }
    
    @Test
-   public void test_divide_int_Success() {
-      assertThat(this.classInstance.divide(13, 14)).isEqualTo(0);
-      assertThat(this.classInstance.divide(13, -14)).isEqualTo(0);
-      assertThat(this.classInstance.divide(-13, 14)).isEqualTo(0);
-      assertThat(this.classInstance.divide(-13, -14)).isEqualTo(0);
+   void test_divide_int_ArithmeticException() {
+      assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
+            () -> this.classInstance.divide(Integer.MAX_VALUE, 0));
+   }
+   
+   @Test
+   void test_divide_int_Success() {
+      assertThat(this.classInstance.divide(13, 14)).isZero();
+      assertThat(this.classInstance.divide(13, -14)).isZero();
+      assertThat(this.classInstance.divide(-13, 14)).isZero();
+      assertThat(this.classInstance.divide(-13, -14)).isZero();
       assertThat(this.classInstance.divide(26, 13)).isEqualTo(2);
       assertThat(this.classInstance.divide(26, -13)).isEqualTo(-2);
       assertThat(this.classInstance.divide(-26, 13)).isEqualTo(-2);
@@ -172,11 +178,17 @@ public class CommonClassBTest {
    }
    
    @Test
-   public void test_divide_long_Success() {
-      assertThat(this.classInstance.divide(11L, 12L)).isEqualTo(0L);
-      assertThat(this.classInstance.divide(11L, -12L)).isEqualTo(0L);
-      assertThat(this.classInstance.divide(-11L, 12L)).isEqualTo(0L);
-      assertThat(this.classInstance.divide(-11L, -12L)).isEqualTo(0L);
+   void test_divide_long_ArithmeticException() {
+      assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
+            () -> this.classInstance.divide(Long.MAX_VALUE, 0L));
+   }
+   
+   @Test
+   void test_divide_long_Success() {
+      assertThat(this.classInstance.divide(11L, 12L)).isZero();
+      assertThat(this.classInstance.divide(11L, -12L)).isZero();
+      assertThat(this.classInstance.divide(-11L, 12L)).isZero();
+      assertThat(this.classInstance.divide(-11L, -12L)).isZero();
       assertThat(this.classInstance.divide(30L, 15L)).isEqualTo(2L);
       assertThat(this.classInstance.divide(30L, -15L)).isEqualTo(-2L);
       assertThat(this.classInstance.divide(-30L, 15L)).isEqualTo(-2L);

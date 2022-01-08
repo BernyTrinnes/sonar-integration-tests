@@ -11,7 +11,6 @@ import org.apache.commons.lang3.RandomUtils;
 /**
  * Helper methods.
  */
-@SuppressWarnings({"javadoc", "boxing"})
 public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
    private DtoHelper() {
       // Hidden to prevent instantiation
@@ -20,14 +19,16 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
    /**
     * Create a {@code ResourceDDto} with random values for its fields.
     *
-    * @return A instance of a {@code ResourceDDto}.
+    * @return An instance of a {@code ResourceDDto}.
     */
    public static ResourceDDto createResourceDDto() {
-      return new ResourceDDto(RandomUtils.nextLong())
-            .setParamD1(RandomStringUtils.randomAlphanumeric(10))
-            .setParamD2(RandomUtils.nextInt())
-            .setParamD3(RandomUtils.nextBoolean())
-            .setParamD4(createResourceDDtoParam4List());
+      return ResourceDDto.builder()
+            .idD(RandomUtils.nextLong())
+            .paramD1(RandomStringUtils.randomAlphanumeric(10))
+            .paramD2(RandomUtils.nextInt())
+            .paramD3(RandomUtils.nextBoolean())
+            .paramD4(createResourceDDtoParam4List())
+            .build();
    }
    
    /**
@@ -52,26 +53,30 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
       if (null == pResourceDtoToClone) {
          return null;
       }
-      return new ResourceDDto(pResourceDtoToClone.getIdD())
-            .setParamD1(pResourceDtoToClone.getParamD1())
-            .setParamD2(pResourceDtoToClone.getParamD2())
-            .setParamD3(pResourceDtoToClone.getParamD3())
-            .setParamD4(pResourceDtoToClone.getParamD4());
+      return ResourceDDto.builder()
+            .idD(pResourceDtoToClone.getIdD())
+            .paramD1(pResourceDtoToClone.getParamD1())
+            .paramD2(pResourceDtoToClone.getParamD2())
+            .paramD3(pResourceDtoToClone.getParamD3())
+            .paramD4(pResourceDtoToClone.getParamD4())
+            .build();
    }
    
    /**
     * Create a {@code ResourceEDto} with random values for its fields.
     *
-    * @return A instance of a {@code ResourceEDto}.
+    * @return An instance of a {@code ResourceEDto}.
     */
    public static ResourceEDto createResourceEDto() {
-      return new ResourceEDto(RandomUtils.nextLong())
-            .setParamE1(RandomUtils.nextInt())
-            .setParamE2(RandomStringUtils.randomAlphanumeric(10))
-            .setParamE3(RandomStringUtils.randomAlphanumeric(11))
-            .setParamE4(RandomUtils.nextLong())
-            .setParamE5(RandomUtils.nextBoolean())
-            .setParamE6(createResourceEDtoParam6List());
+      return ResourceEDto.builder()
+            .idE(RandomUtils.nextLong())
+            .paramE1(RandomUtils.nextInt())
+            .paramE2(RandomStringUtils.randomAlphanumeric(10))
+            .paramE3(RandomStringUtils.randomAlphanumeric(11))
+            .paramE4(RandomUtils.nextLong())
+            .paramE5(RandomUtils.nextBoolean())
+            .paramE6(createResourceEDtoParam6List())
+            .build();
    }
    
    /**
@@ -96,30 +101,34 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
       if (null == pResourceDtoToClone) {
          return null;
       }
-      return new ResourceEDto(pResourceDtoToClone.getIdE())
-            .setParamE1(pResourceDtoToClone.getParamE1())
-            .setParamE2(pResourceDtoToClone.getParamE2())
-            .setParamE3(pResourceDtoToClone.getParamE3())
-            .setParamE4(pResourceDtoToClone.getParamE4())
-            .setParamE5(pResourceDtoToClone.getParamE5())
-            .setParamE6(pResourceDtoToClone.getParamE6());
+      return ResourceEDto.builder()
+            .idE(pResourceDtoToClone.getIdE())
+            .paramE1(pResourceDtoToClone.getParamE1())
+            .paramE2(pResourceDtoToClone.getParamE2())
+            .paramE3(pResourceDtoToClone.getParamE3())
+            .paramE4(pResourceDtoToClone.getParamE4())
+            .paramE5(pResourceDtoToClone.getParamE5())
+            .paramE6(pResourceDtoToClone.getParamE6())
+            .build();
    }
    
    /**
     * Create a {@code ResourceFDto} with random values for its fields.
     *
-    * @return A instance of a {@code ResourceFDto}.
+    * @return An instance of a {@code ResourceFDto}.
     */
    public static ResourceFDto createResourceFDto() {
-      return new ResourceFDto(RandomUtils.nextLong())
-            .setParamF1(RandomStringUtils.randomAlphanumeric(10))
-            .setParamF2(RandomUtils.nextInt())
-            .setParamF3(RandomStringUtils.randomAlphanumeric(11))
-            .setParamF4(RandomStringUtils.randomAlphanumeric(12))
-            .setParamF5(RandomUtils.nextBoolean())
-            .setParamF6(RandomUtils.nextLong())
-            .setParamF7(RandomStringUtils.randomAlphanumeric(13))
-            .setParamF8(createResourceFDtoParam8List());
+      return ResourceFDto.builder()
+            .idF(RandomUtils.nextLong())
+            .paramF1(RandomStringUtils.randomAlphanumeric(10))
+            .paramF2(RandomUtils.nextInt())
+            .paramF3(RandomStringUtils.randomAlphanumeric(11))
+            .paramF4(RandomStringUtils.randomAlphanumeric(12))
+            .paramF5(RandomUtils.nextBoolean())
+            .paramF6(RandomUtils.nextLong())
+            .paramF7(RandomStringUtils.randomAlphanumeric(13))
+            .paramF8(createResourceFDtoParam8List())
+            .build();
    }
    
    /**
@@ -143,14 +152,16 @@ public final class DtoHelper extends org.example.sit.common.dto.DtoHelper {
       if (null == pResourceDtoToClone) {
          return null;
       }
-      return new ResourceFDto(pResourceDtoToClone.getIdF())
-            .setParamF1(pResourceDtoToClone.getParamF1())
-            .setParamF2(pResourceDtoToClone.getParamF2())
-            .setParamF3(pResourceDtoToClone.getParamF3())
-            .setParamF4(pResourceDtoToClone.getParamF4())
-            .setParamF5(pResourceDtoToClone.getParamF5())
-            .setParamF6(pResourceDtoToClone.getParamF6())
-            .setParamF7(pResourceDtoToClone.getParamF7())
-            .setParamF8(pResourceDtoToClone.getParamF8());
+      return ResourceFDto.builder()
+            .idF(pResourceDtoToClone.getIdF())
+            .paramF1(pResourceDtoToClone.getParamF1())
+            .paramF2(pResourceDtoToClone.getParamF2())
+            .paramF3(pResourceDtoToClone.getParamF3())
+            .paramF4(pResourceDtoToClone.getParamF4())
+            .paramF5(pResourceDtoToClone.getParamF5())
+            .paramF6(pResourceDtoToClone.getParamF6())
+            .paramF7(pResourceDtoToClone.getParamF7())
+            .paramF8(pResourceDtoToClone.getParamF8())
+            .build();
    }
 }

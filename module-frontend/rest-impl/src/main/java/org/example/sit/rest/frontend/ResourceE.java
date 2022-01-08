@@ -13,47 +13,48 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.example.sit.common.resources.ResourceHandler;
+import org.example.sit.common.rest.AbstractBaseResource;
 import org.example.sit.rest.frontend.dto.ResourceEDto;
 
 /**
- * The REST resource which will be tested using integration tests in
- * {@code module-integration-test}.
+ * The REST resource which will be tested using integration tests in {@code module-integration-tests}.
  */
 @Path("resource-e")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ResourceE {
-   private ResourceHandler<ResourceEDto> resources;
+public class ResourceE extends AbstractBaseResource {
+   private final ResourceHandler<ResourceEDto> resourceHandler;
    
    /**
-    * Initializes this resource.
+    * Initialize this resource. <br>
+    * This initialization is needed by Jersey.
     */
    public ResourceE() {
-      this.resources = new ResourceHandler<>();
+      this.resourceHandler = new ResourceHandler<>();
    }
    
    /**
     * Return the data of all resources.
     *
-    * @return A response containing the data of all resources, or a response with status {@code 404}
-    * if there are no resources available.
+    * @return A response containing the data of all resources, or a response with status {@code 404} if there are no
+    * resources available.
     */
    @GET
    public Response getAllResourceE() {
-      if (!this.resources.hasResources()) {
+      if (!this.resourceHandler.hasResources()) {
          return Response.status(Response.Status.NOT_FOUND).build();
       }
-      return Response.ok().entity(this.resources.getAllResources()).build();
+      return Response.ok().entity(this.resourceHandler.getAllResources()).build();
    }
    
    /**
-    * Delete the data of all resources.
+    * Remove the data of all resources.
     *
-    * @return A response containing the result of the deletion.
+    * @return A response containing the result of the deletion, the result will always be successful.
     */
    @DELETE
    public Response deleteAllResourceE() {
-      this.resources.removeAllResources();
+      this.resourceHandler.removeAllResources();
       return Response.ok().entity(new AbstractMap.SimpleEntry<>("cleared", Boolean.TRUE)).build();
    }
    
@@ -61,99 +62,97 @@ public class ResourceE {
     * Store the data of the given resource.
     *
     * @param pResourceE The data of the resource.
-    * @return A response with the status of the process.
+    * @return An HTTP status {@code 400} response if the given resource is invalid, or an HTTP status {@code 409}
+    * response if the given resource is already stored, or an HTTP status {@code 201} response containing the data of
+    * the resource itself if it could be stored successfully.
     */
    @POST
    public Response createResourceE(final ResourceEDto pResourceE) {
       if (null == pResourceE) {
          return Response.status(Response.Status.BAD_REQUEST).build();
       }
-      if (this.resources.hasResource(pResourceE.getIdE())) {
-         return Response.status(Response.Status.CONFLICT)
-               .entity(getEntityForId(pResourceE.getIdE())).build();
+      if (this.resourceHandler.hasResource(pResourceE.getIdE())) {
+         return Response.status(Response.Status.CONFLICT).entity(getEntityForId(pResourceE.getIdE())).build();
       }
       
-      this.resources.addResource(pResourceE.getIdE(), pResourceE);
+      this.resourceHandler.addResource(pResourceE.getIdE(), pResourceE);
       return Response.status(Response.Status.CREATED).entity(pResourceE).build();
-   }
-   
-   private AbstractMap.SimpleEntry<String, Long> getEntityForId(final long pId) {
-      return new AbstractMap.SimpleEntry<>("id", Long.valueOf(pId));
    }
    
    /**
     * Retrieve the data of the resource with the given ID.
     *
-    * @param pId The ID of the resource.
-    * @return A response containing the data of the requested resources, or a response with status
-    * {@code 404} if there is no resource with the given ID.
+    * @param pIdE The ID of the resource.
+    * @return A response containing the data of the requested resource, or a response with status {@code 404} if there
+    * is no resource with the given ID.
     */
    @GET
    @Path("/{id}")
-   public Response getResourceE(@PathParam("id") final long pId) {
-      if (!this.resources.hasResource(pId)) {
-         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
+   public Response getResourceE(@PathParam("id") final long pIdE) {
+      if (!this.resourceHandler.hasResource(pIdE)) {
+         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pIdE)).build();
       }
       
-      return Response.ok().entity(this.resources.getResource(pId)).build();
+      return Response.ok().entity(this.resourceHandler.getResource(pIdE)).build();
    }
    
    /**
     * Remove the resource with the given ID.
     *
-    * @param pId The ID of the resource.
-    * @return A response containing the result of the process.
+    * @param pIdE The ID of the resource.
+    * @return An HTTP status {@code 404} response if the resource with the given ID is not available, or a response
+    * containing the ID of the removed resource if the removal was successful.
     */
    @DELETE
    @Path("/{id}")
-   public Response deleteResourceE(@PathParam("id") final long pId) {
-      if (!this.resources.hasResource(pId)) {
-         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
+   public Response deleteResourceE(@PathParam("id") final long pIdE) {
+      if (!this.resourceHandler.hasResource(pIdE)) {
+         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pIdE)).build();
       }
       
-      this.resources.removeResource(pId);
-      return Response.ok()
-            .entity(new AbstractMap.SimpleEntry<>("deleted", Long.valueOf(pId))).build();
+      this.resourceHandler.removeResource(pIdE);
+      return Response.ok().entity(new AbstractMap.SimpleEntry<>("deleted", Long.valueOf(pIdE))).build();
    }
    
    /**
     * Update the data of the resource with the given ID.
     *
-    * @param pId The ID of the resource.
-    * @param pResourceEDto The data of the resource.
-    * @return A response containing the result of the process.
+    * @param pIdE The ID of the resource.
+    * @param pResourceEDtoNew The updated data of the resource.
+    * @return An HTTP status {@code 400} response if the given resource is invalid, or an HTTP status {@code 404}
+    * response if the resource with the given ID is not available, or an HTTP status {@code 202} response containing
+    * the data of the updated resource if it could be updated successfully.
     */
    @PUT
    @Path("/{id}")
-   public Response updateResourceE(@PathParam("id") final long pId,
-         final ResourceEDto pResourceEDto) {
-      if (!this.resources.hasResource(pId)) {
-         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
+   public Response updateResourceE(@PathParam("id") final long pIdE, final ResourceEDto pResourceEDtoNew) {
+      if (null == pResourceEDtoNew) {
+         return Response.status(Response.Status.BAD_REQUEST).entity(getEntityForId(pIdE)).build();
       }
-      if (null == pResourceEDto) {
-         return Response.status(Response.Status.BAD_REQUEST).entity(getEntityForId(pId)).build();
+      if (!this.resourceHandler.hasResource(pIdE)) {
+         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pIdE)).build();
       }
       
-      final ResourceEDto resourceEDto = this.resources.getResource(pId);
-      if (null != pResourceEDto.getParamE1()) {
-         resourceEDto.setParamE1(pResourceEDto.getParamE1());
+      final var resourceEDtoExisting = this.resourceHandler.getResource(pIdE);
+      if (null != pResourceEDtoNew.getParamE1()) {
+         resourceEDtoExisting.setParamE1(pResourceEDtoNew.getParamE1());
       }
-      if (null != pResourceEDto.getParamE2()) {
-         resourceEDto.setParamE2(pResourceEDto.getParamE2());
+      if (null != pResourceEDtoNew.getParamE2()) {
+         resourceEDtoExisting.setParamE2(pResourceEDtoNew.getParamE2());
       }
-      if (null != pResourceEDto.getParamE3()) {
-         resourceEDto.setParamE3(pResourceEDto.getParamE3());
+      if (null != pResourceEDtoNew.getParamE3()) {
+         resourceEDtoExisting.setParamE3(pResourceEDtoNew.getParamE3());
       }
-      if (null != pResourceEDto.getParamE4()) {
-         resourceEDto.setParamE4(pResourceEDto.getParamE4());
+      if (null != pResourceEDtoNew.getParamE4()) {
+         resourceEDtoExisting.setParamE4(pResourceEDtoNew.getParamE4());
       }
-      if (null != pResourceEDto.getParamE5()) {
-         resourceEDto.setParamE5(pResourceEDto.getParamE5());
+      if (null != pResourceEDtoNew.getParamE5()) {
+         resourceEDtoExisting.setParamE5(pResourceEDtoNew.getParamE5());
       }
-      if (null != pResourceEDto.getParamE6()) {
-         resourceEDto.setParamE6(pResourceEDto.getParamE6());
+      if (null != pResourceEDtoNew.getParamE6()) {
+         resourceEDtoExisting.setParamE6(pResourceEDtoNew.getParamE6());
       }
-      this.resources.replaceResource(pId, resourceEDto);
-      return Response.status(Response.Status.ACCEPTED).entity(resourceEDto).build();
+      this.resourceHandler.replaceResource(pIdE, resourceEDtoExisting);
+      return Response.status(Response.Status.ACCEPTED).entity(resourceEDtoExisting).build();
    }
 }

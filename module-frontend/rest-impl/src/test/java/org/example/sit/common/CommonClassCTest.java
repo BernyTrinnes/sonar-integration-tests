@@ -1,26 +1,25 @@
 package org.example.sit.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@code CommonClassC} from {@code module-common}.
  */
-@SuppressWarnings("javadoc")
-public class CommonClassCTest {
+class CommonClassCTest {
    private CommonClassC classInstance;
    
-   @Before
+   @BeforeEach
    public void setUp() {
       this.classInstance = new CommonClassC();
       assertNotNull(this.classInstance);
    }
    
    @Test
-   public void test_isStringEmpty() {
+   void test_isStringEmpty() {
       assertThat(this.classInstance.isStringEmpty(null)).isTrue();
       assertThat(this.classInstance.isStringEmpty("")).isTrue();
       assertThat(this.classInstance.isStringEmpty(" ")).isFalse();
@@ -30,7 +29,7 @@ public class CommonClassCTest {
    }
    
    @Test
-   public void test_isStringNotEmpty() {
+   void test_isStringNotEmpty() {
       assertThat(this.classInstance.isStringNotEmpty(null)).isFalse();
       assertThat(this.classInstance.isStringNotEmpty("")).isFalse();
       assertThat(this.classInstance.isStringNotEmpty(" ")).isTrue();
@@ -40,7 +39,7 @@ public class CommonClassCTest {
    }
    
    @Test
-   public void test_isStringBlank() {
+   void test_isStringBlank() {
       assertThat(this.classInstance.isStringBlank(null)).isTrue();
       assertThat(this.classInstance.isStringBlank("")).isTrue();
       assertThat(this.classInstance.isStringBlank(" ")).isTrue();
@@ -50,7 +49,7 @@ public class CommonClassCTest {
    }
    
    @Test
-   public void test_isStringNotBlank() {
+   void test_isStringNotBlank() {
       assertThat(this.classInstance.isStringNotBlank(null)).isFalse();
       assertThat(this.classInstance.isStringNotBlank("")).isFalse();
       assertThat(this.classInstance.isStringNotBlank(" ")).isFalse();

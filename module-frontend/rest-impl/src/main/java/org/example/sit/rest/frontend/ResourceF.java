@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.example.sit.common.resources.ResourceHandler;
+import org.example.sit.common.rest.AbstractBaseResource;
 import org.example.sit.rest.frontend.dto.ResourceFDto;
 
 /**
@@ -23,14 +24,16 @@ import org.example.sit.rest.frontend.dto.ResourceFDto;
  *    <li>
  *       Unit tests in module {@code module-backend/rest-impl}:
  *       <ul>
+ *          <li>{@code getAvailability()}</li>
  *          <li>{@code createResourceF(ResourceFDto)}</li>
  *          <li>{@code deleteResourceF(long)}</li>
  *          <li>{@code updateResourceF(long, ResourceFDto)}</li>
  *       </ul>
  *    </li>
  *    <li>
- *       Integration tests in module {@code module-integration-test}:
+ *       Integration tests in module {@code module-integration-tests}:
  *       <ul>
+ *          <li>{@code getAvailability()}</li>
  *          <li>{@code deleteAllResourceF()}</li>
  *          <li>{@code getAllResourceF()}</li>
  *          <li>{@code getResourceF(long)}</li>
@@ -41,38 +44,51 @@ import org.example.sit.rest.frontend.dto.ResourceFDto;
 @Path("resource-f")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ResourceF {
-   private ResourceHandler<ResourceFDto> resources;
+public class ResourceF extends AbstractBaseResource {
+   private final ResourceHandler<ResourceFDto> resourceHandler;
    
    /**
-    * Initializes this resource.
+    * Initialize this resource. <br>
+    * This initialization is needed by Jersey.
     */
+   @SuppressWarnings("unused")
    public ResourceF() {
-      this.resources = new ResourceHandler<>();
+      this.resourceHandler = new ResourceHandler<>();
+   }
+   
+   /**
+    * Initialize this resource. <br>
+    * This initialization is needed by the test mocks.
+    *
+    * @param pResourceHandler The {@link ResourceHandler} for this resource.
+    */
+   @SuppressWarnings("unused")
+   public ResourceF(final ResourceHandler<ResourceFDto> pResourceHandler) {
+      this.resourceHandler = pResourceHandler;
    }
    
    /**
     * Return the data of all resources.
     *
-    * @return A response containing the data of all resources, or a response with status {@code 404}
-    * if there are no resources available.
+    * @return A response containing the data of all resources, or a response with status {@code 404} if there are no
+    * resources available.
     */
    @GET
    public Response getAllResourceF() {
-      if (!this.resources.hasResources()) {
+      if (!this.resourceHandler.hasResources()) {
          return Response.status(Response.Status.NOT_FOUND).build();
       }
-      return Response.ok().entity(this.resources.getAllResources()).build();
+      return Response.ok().entity(this.resourceHandler.getAllResources()).build();
    }
    
    /**
-    * Delete the data of all resources.
+    * Remove the data of all resources.
     *
-    * @return A response containing the result of the deletion.
+    * @return A response containing the result of the deletion, the result will always be successful.
     */
    @DELETE
    public Response deleteAllResourceF() {
-      this.resources.removeAllResources();
+      this.resourceHandler.removeAllResources();
       return Response.ok().entity(new AbstractMap.SimpleEntry<>("cleared", Boolean.TRUE)).build();
    }
    
@@ -80,105 +96,103 @@ public class ResourceF {
     * Store the data of the given resource.
     *
     * @param pResourceF The data of the resource.
-    * @return A response with the status of the process.
+    * @return An HTTP status {@code 400} response if the given resource is invalid, or an HTTP status {@code 409}
+    * response if the given resource is already stored, or an HTTP status {@code 201} response containing the data of
+    * the resource itself if it could be stored successfully.
     */
    @POST
    public Response createResourceF(final ResourceFDto pResourceF) {
       if (null == pResourceF) {
          return Response.status(Response.Status.BAD_REQUEST).build();
       }
-      if (this.resources.hasResource(pResourceF.getIdF())) {
-         return Response.status(Response.Status.CONFLICT)
-               .entity(getEntityForId(pResourceF.getIdF())).build();
+      if (this.resourceHandler.hasResource(pResourceF.getIdF())) {
+         return Response.status(Response.Status.CONFLICT).entity(getEntityForId(pResourceF.getIdF())).build();
       }
       
-      this.resources.addResource(pResourceF.getIdF(), pResourceF);
+      this.resourceHandler.addResource(pResourceF.getIdF(), pResourceF);
       return Response.status(Response.Status.CREATED).entity(pResourceF).build();
-   }
-   
-   private AbstractMap.SimpleEntry<String, Long> getEntityForId(final long pId) {
-      return new AbstractMap.SimpleEntry<>("id", Long.valueOf(pId));
    }
    
    /**
     * Retrieve the data of the resource with the given ID.
     *
-    * @param pId The ID of the resource.
-    * @return A response containing the data of the requested resources, or a response with status
-    * {@code 404} if there is no resource with the given ID.
+    * @param pIdF The ID of the resource.
+    * @return A response containing the data of the requested resource, or a response with status {@code 404} if there
+    * is no resource with the given ID.
     */
    @GET
    @Path("/{id}")
-   public Response getResourceF(@PathParam("id") final long pId) {
-      if (!this.resources.hasResource(pId)) {
-         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
+   public Response getResourceF(@PathParam("id") final long pIdF) {
+      if (!this.resourceHandler.hasResource(pIdF)) {
+         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pIdF)).build();
       }
       
-      return Response.ok().entity(this.resources.getResource(pId)).build();
+      return Response.ok().entity(this.resourceHandler.getResource(pIdF)).build();
    }
    
    /**
     * Remove the resource with the given ID.
     *
-    * @param pId The ID of the resource.
-    * @return A response containing the result of the process.
+    * @param pIdF The ID of the resource.
+    * @return An HTTP status {@code 404} response if the resource with the given ID is not available, or a response
+    * containing the ID of the removed resource if the removal was successful.
     */
    @DELETE
    @Path("/{id}")
-   public Response deleteResourceF(@PathParam("id") final long pId) {
-      if (!this.resources.hasResource(pId)) {
-         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
+   public Response deleteResourceF(@PathParam("id") final long pIdF) {
+      if (!this.resourceHandler.hasResource(pIdF)) {
+         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pIdF)).build();
       }
       
-      this.resources.removeResource(pId);
-      return Response.ok()
-            .entity(new AbstractMap.SimpleEntry<>("deleted", Long.valueOf(pId))).build();
+      this.resourceHandler.removeResource(pIdF);
+      return Response.ok().entity(new AbstractMap.SimpleEntry<>("deleted", Long.valueOf(pIdF))).build();
    }
    
    /**
     * Update the data of the resource with the given ID.
     *
     * @param pId The ID of the resource.
-    * @param pResourceF The data of the resource.
-    * @return A response containing the result of the process.
+    * @param pResourceFDtoNew The updated data of the resource.
+    * @return An HTTP status {@code 400} response if the given resource is invalid, or an HTTP status {@code 404}
+    * response if the resource with the given ID is not available, or an HTTP status {@code 202} response containing
+    * the data of the updated resource if it could be updated successfully.
     */
    @PUT
    @Path("/{id}")
-   public Response updateResourceF(@PathParam("id") final long pId,
-         final ResourceFDto pResourceF) {
-      if (!this.resources.hasResource(pId)) {
-         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
-      }
-      if (null == pResourceF) {
+   public Response updateResourceF(@PathParam("id") final long pId, final ResourceFDto pResourceFDtoNew) {
+      if (null == pResourceFDtoNew) {
          return Response.status(Response.Status.BAD_REQUEST).entity(getEntityForId(pId)).build();
       }
+      if (!this.resourceHandler.hasResource(pId)) {
+         return Response.status(Response.Status.NOT_FOUND).entity(getEntityForId(pId)).build();
+      }
       
-      final ResourceFDto resourceFDto = this.resources.getResource(pId);
-      if (null != pResourceF.getParamF1()) {
-         resourceFDto.setParamF1(pResourceF.getParamF1());
+      final var resourceFDtoExisting = this.resourceHandler.getResource(pId);
+      if (null != pResourceFDtoNew.getParamF1()) {
+         resourceFDtoExisting.setParamF1(pResourceFDtoNew.getParamF1());
       }
-      if (null != pResourceF.getParamF2()) {
-         resourceFDto.setParamF2(pResourceF.getParamF2());
+      if (null != pResourceFDtoNew.getParamF2()) {
+         resourceFDtoExisting.setParamF2(pResourceFDtoNew.getParamF2());
       }
-      if (null != pResourceF.getParamF3()) {
-         resourceFDto.setParamF3(pResourceF.getParamF3());
+      if (null != pResourceFDtoNew.getParamF3()) {
+         resourceFDtoExisting.setParamF3(pResourceFDtoNew.getParamF3());
       }
-      if (null != pResourceF.getParamF4()) {
-         resourceFDto.setParamF4(pResourceF.getParamF4());
+      if (null != pResourceFDtoNew.getParamF4()) {
+         resourceFDtoExisting.setParamF4(pResourceFDtoNew.getParamF4());
       }
-      if (null != pResourceF.getParamF5()) {
-         resourceFDto.setParamF5(pResourceF.getParamF5());
+      if (null != pResourceFDtoNew.getParamF5()) {
+         resourceFDtoExisting.setParamF5(pResourceFDtoNew.getParamF5());
       }
-      if (null != pResourceF.getParamF6()) {
-         resourceFDto.setParamF6(pResourceF.getParamF6());
+      if (null != pResourceFDtoNew.getParamF6()) {
+         resourceFDtoExisting.setParamF6(pResourceFDtoNew.getParamF6());
       }
-      if (null != pResourceF.getParamF7()) {
-         resourceFDto.setParamF7(pResourceF.getParamF7());
+      if (null != pResourceFDtoNew.getParamF7()) {
+         resourceFDtoExisting.setParamF7(pResourceFDtoNew.getParamF7());
       }
-      if (null != pResourceF.getParamF8()) {
-         resourceFDto.setParamF8(pResourceF.getParamF8());
+      if (null != pResourceFDtoNew.getParamF8()) {
+         resourceFDtoExisting.setParamF8(pResourceFDtoNew.getParamF8());
       }
-      this.resources.replaceResource(pId, resourceFDto);
-      return Response.status(Response.Status.ACCEPTED).entity(resourceFDto).build();
+      this.resourceHandler.replaceResource(pId, resourceFDtoExisting);
+      return Response.status(Response.Status.ACCEPTED).entity(resourceFDtoExisting).build();
    }
 }

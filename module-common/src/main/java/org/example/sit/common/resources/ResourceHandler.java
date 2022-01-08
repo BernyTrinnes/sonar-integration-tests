@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @param <T> The type of the DTO which will be stored.
  */
 public class ResourceHandler<T> {
-   private static volatile Map<Long, Object> resources = new LinkedHashMap<>();
+   private static final Map<Long, Object> RESOURCES = new LinkedHashMap<>();
    
    /**
     * Add a resource.
@@ -21,7 +21,7 @@ public class ResourceHandler<T> {
     * @param pResourceDto The data of the resource.
     */
    public void addResource(final long pId, final T pResourceDto) {
-      resources.put(Long.valueOf(pId), pResourceDto);
+      RESOURCES.put(Long.valueOf(pId), pResourceDto);
    }
    
    /**
@@ -31,19 +31,19 @@ public class ResourceHandler<T> {
     */
    @SuppressWarnings("unchecked")
    public List<T> getAllResources() {
-      return resources.values().stream().map(elem -> (T) elem)
-            .collect(Collectors.toCollection(LinkedList::new));
+      return RESOURCES.values().stream().map(elem -> (T) elem).collect(Collectors.toCollection(LinkedList::new));
    }
    
    /**
     * Return the data of the resource with the given ID.
     *
     * @param pId The ID of the resource.
-    * @return The data of the resource with the given ID.
+    * @return The data of the resource with the given ID, <code>null</code> if the resource with the given ID does not
+    * exist.
     */
    @SuppressWarnings("unchecked")
    public T getResource(final long pId) {
-      return (T) resources.get(Long.valueOf(pId));
+      return (T) RESOURCES.get(Long.valueOf(pId));
    }
    
    /**
@@ -52,7 +52,7 @@ public class ResourceHandler<T> {
     * @return {@code true} if there are resources available, {@code false} otherwise.
     */
    public boolean hasResources() {
-      return !resources.isEmpty();
+      return !RESOURCES.isEmpty();
    }
    
    /**
@@ -62,7 +62,7 @@ public class ResourceHandler<T> {
     * @return {@code true} if a resource with the given ID is available, {@code false} otherwise.
     */
    public boolean hasResource(final long pId) {
-      return resources.containsKey(Long.valueOf(pId));
+      return RESOURCES.containsKey(Long.valueOf(pId));
    }
    
    /**
@@ -72,14 +72,14 @@ public class ResourceHandler<T> {
     * @param pResourceDto The data of the resource.
     */
    public void replaceResource(final long pId, final T pResourceDto) {
-      resources.replace(Long.valueOf(pId), pResourceDto);
+      RESOURCES.replace(Long.valueOf(pId), pResourceDto);
    }
    
    /**
     * Remove all resources.
     */
    public void removeAllResources() {
-      resources.clear();
+      RESOURCES.clear();
    }
    
    /**
@@ -88,6 +88,6 @@ public class ResourceHandler<T> {
     * @param pId The ID of the resource to remove.
     */
    public void removeResource(final long pId) {
-      resources.remove(Long.valueOf(pId));
+      RESOURCES.remove(Long.valueOf(pId));
    }
 }
